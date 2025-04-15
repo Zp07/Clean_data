@@ -8,6 +8,6 @@ app = FastAPI(title="Clean data", version="1.0")
 app.include_router(clean_router)
 
 # Ruta de prueba
-app.get("/")
+@app.get("/")
 def root():
     return {"message": "Clean data is running"}
