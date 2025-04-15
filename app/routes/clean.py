@@ -1,13 +1,9 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-import os
 import pandas as pd
+from  app.services.cleaning import filtrar_ciudad
 
 # Creamos rutas para Clean Data
 router = APIRouter()
-
-# Directorio donde se guardarán los archivos CSV subidos (opcional)
-UPLOAD_DIR = "csv_files"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Ruta para la verificación de salud del servicio
 @router.get("/clean")
@@ -32,9 +28,12 @@ async def upload_csv(file: UploadFile = File(...)):
     columnas = df.columns.tolist()
     num_filas = df.shape[0]
 
+    resultado = filtrar_ciudad(df)
+
     # Retornamos el resultado
     return {
         "columnas": columnas,
         "num_filas": num_filas,
+        "resultado": resultado,
         "message": "Archivo CSV procesado correctamente",
     }
